@@ -1,0 +1,6 @@
+{
+  "name": "lb-asaas-rh",
+  "version": "1.0.0",
+  "description": "Integração LB com Asaas para pagamento de colaboradoras via PIX",
+  "private": true
+}

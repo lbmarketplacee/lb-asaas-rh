@@ -79,8 +79,8 @@ export default async function handler(req, res) {
         const query = new URLSearchParams({
           limit: String(limit),
           offset: String(offset),
-          ...(data_inicio ? { paymentDate_ge: data_inicio } : {}),
-          ...(data_fim ? { paymentDate_le: data_fim } : {})
+          ...(data_inicio ? { 'paymentDate[ge]': data_inicio } : {}),
+          ...(data_fim ? { 'paymentDate[le]': data_fim } : {})
         });
         const resp = await fetch(`${host}/payments?${query}`, { headers: { 'access_token': chave } });
         const data = await resp.json();
@@ -104,8 +104,8 @@ export default async function handler(req, res) {
         const query = new URLSearchParams({
           limit: String(limit),
           offset: String(offset),
-          ...(data_inicio ? { dateCreated_ge: data_inicio } : {}),
-          ...(data_fim ? { dateCreated_le: data_fim } : {})
+          ...(data_inicio ? { 'dateCreated[ge]': data_inicio } : {}),
+          ...(data_fim ? { 'dateCreated[le]': data_fim } : {})
         });
         const resp = await fetch(`${host}/transfers?${query}`, { headers: { 'access_token': chave } });
         const data = await resp.json();

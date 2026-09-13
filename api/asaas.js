@@ -136,6 +136,24 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, clientes: todos.map(c => ({ id: c.id, nome: c.name })) });
     }
 
+    // Lista as assinaturas (cobranças recorrentes) ativas — usado pro MRR e vencimentos no DRE
+    if (acao === 'listar_assinaturas') {
+      let todas = [];
+      let offset = 0;
+      const limit = 100;
+      let temMais = true;
+      while (temMais) {
+        const resp = await fetch(`${host}/subscriptions?status=ACTIVE&limit=${limit}&offset=${offset}`, { headers: { 'access_token': chave } });
+        const data = await resp.json();
+        if (!resp.ok) return res.status(200).json({ ok: false, erro: data?.errors?.[0]?.description || 'Erro ao listar assinaturas.' });
+        todas = todas.concat(data.data || []);
+        temMais = !!data.hasMore;
+        offset += limit;
+        if (offset > 2000) break;
+      }
+      return res.status(200).json({ ok: true, assinaturas: todas });
+    }
+
     return res.status(400).json({ erro: 'Ação não reconhecida.' });
   } catch (e) {
     console.error(e);
